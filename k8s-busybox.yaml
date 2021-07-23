@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: k8s-busybox
+  namespace: kube-system
+  labels:
+    k8s-app: k8s-busybox
+spec:
+  selector:
+    matchLabels:
+      name: k8s-busybox
+  template:
+    metadata:
+      labels:
+        name: k8s-busybox
+    spec:
+      tolerations:
+      # this toleration is to have the daemonset runnable on master nodes
+      # remove it if your masters can't run pods
+      #- key: node-role.kubernetes.io/master
+      #  operator: Exists
+      #  effect: NoSchedule
+      containers:
+      - name: k8s-busybox
+        image: elitereloaded/k8s-busybox
+      terminationGracePeriodSeconds: 30
